@@ -2,8 +2,8 @@ class rails_test extends uvm_test;
 
   `uvm_component_utils(rails_test)
   
-  function new(input string inst = "rails_test", uvm_component c);
-    super.new(inst,c);
+  function new(input string inst = "rails_test", uvm_component parent);
+    super.new(inst, parent);
   endfunction
   
   virtual function void build_phase(uvm_phase phase);
