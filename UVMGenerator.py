@@ -20,25 +20,43 @@ class UVM_Generator:
             return True
         else:
             return False
+        
+    def WriteBuildPhase(self, testname, node, line):
+        for child in node.child or []:
+            for index, row in enumerate(line):
+                if "utils" in row:
+                    line.insert(index + 1, "\n")
+                    DeclareVariable = "    "+testname + "_" + child.type + " " + child.type[0] + ";"
+                    line.insert(index + 2, DeclareVariable)
+                
+                if "super.build_phase" in row:
+                    temp = f"        {child.type[0]} = {testname}_{child.type}::type_id::create(\"{child.type[0]}\",this);\n"
+                    line.insert(index + 1, temp)
+        return line
 
-    def CreateTest(self, test_name, type):
+    def CopyTemplate(self, test_name, type):
         line = []
         
         with open("Template/uvm_template_"+ type +".sv", mode = 'r') as template:
-            line.append(template.read())
-            line[-1] = line[-1].replace('{name}',     test_name)
-
-        svfile = "Result/" + test_name + "_"+ type +".sv"
-
-        with open(svfile, mode = "w") as result:
-            for s in line:
-                result.write(s)
+            for row in template:
+                row = row.replace('{name}', test_name)
+                line.append(row)
+        return line
     
+    def WriteSV(self, line, test_name, type):
+        svfile = "Result/" + test_name + "_"+ type +".sv"
+        with open(svfile, mode = "w") as result:
+            for s in line or []:
+                result.write(s)
+
     def CreateTestbench(self, test_name, node):
+        line = []
         if self.CheckType(node.type):
-            self.CreateTest(test_name, node.type)
-        for child in node.child or []:
-            self.CreateTestbench(test_name, child)
+            line = self.CopyTemplate(test_name, node.type)
+            line = self.WriteBuildPhase(test_name, node, line)
+            self.WriteSV(line, test_name, node.type)
+        for children in node.child or []:
+            self.CreateTestbench(test_name, children)
 
     def dfs(self, root):
         MyQ = Queue()
@@ -63,6 +81,7 @@ class UVM_Generator:
         scoreboard = Node("scoreboard", child = None,               type = "scoreboard")
         agent      = Node("agent",      child = [driver,monitor],   type = "agent")
         env        = Node("env",        child = [agent,scoreboard], type = "env")
+        #env        = Node("env",        child = None,               type = "env")
         test       = Node("test",       child = [env],              type = "test")
         self.print_tree(test)
         self.CreateTestbench(test_name = "rails", node = test)
