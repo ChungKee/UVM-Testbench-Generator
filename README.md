@@ -12,9 +12,9 @@
 |Template | The uvm template|
 |main.py  | Run this python code and get the uvm testbench in Result |
 
-## Example
+## Easy Example
 
-1. run main.py
+1. run UVMGenerator.py
 2. Get the hierarchy 
 ```
 [0] test
@@ -25,3 +25,13 @@
     [2] scoreboard
 ```
 3. Copy the result from Result file
+
+
+## Visualization
+### Install
+The visualization of UVM need to import anytree and graphviz
+
+future --> Teach how to install the requirement of visualization
+### How to get the pic?
+1. Open the VisualizationFlag in UVMGenerator class.
+2. The name of output picture is "UVM_pic.png"

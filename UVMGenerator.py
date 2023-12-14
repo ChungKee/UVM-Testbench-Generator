@@ -1,7 +1,8 @@
 # %%
 from queue import Queue
+from VisualizationUVM import Visualization_UVM
 
-class Node:
+class UVMNode:
     def __init__(self, name, child, type) -> None:
         self.name = name
         self.child = child
@@ -10,7 +11,8 @@ class Node:
 class UVM_Generator:
     root = "top"
     def __init__(self) -> None:
-        pass
+        self.VisualizationFlag = False
+    
     def input_data(self,root) -> None:
         self.dfs(root)
 
@@ -76,19 +78,32 @@ class UVM_Generator:
 
     def DefaultInput(self):
 
-        monitor    = Node("monitor",    child = None,               type = "monitor")
-        driver     = Node("driver",     child = None,               type = "driver")
-        scoreboard = Node("scoreboard", child = None,               type = "scoreboard")
-        agent      = Node("agent",      child = [driver,monitor],   type = "agent")
-        env        = Node("env",        child = [agent,scoreboard], type = "env")
-        #env        = Node("env",        child = None,               type = "env")
-        test       = Node("test",       child = [env],              type = "test")
+        monitor    = UVMNode("monitor",    child = None,               type = "monitor")
+        driver     = UVMNode("driver",     child = None,               type = "driver")
+        scoreboard = UVMNode("scoreboard", child = None,               type = "scoreboard")
+        agent      = UVMNode("agent",      child = [driver,monitor],   type = "agent")
+        env        = UVMNode("env",        child = [agent,scoreboard], type = "env")
+        #env        = UVMNode("env",        child = None,               type = "env")
+        test       = UVMNode("test",       child = [env],              type = "test")
+        print("The UVM testbench : ")
         self.print_tree(test)
+        if self.VisualizationFlag == True :
+            Visualization_UVM().VisualizeUVMNode(UVM_node=test)
+        
         self.CreateTestbench(test_name = "rails", node = test)
 
 if __name__ == "__main__":
 
     UG = UVM_Generator()
     UG.DefaultInput()
-   
+    '''
+    monitor    = UVMNode("monitor",    child = None,               type = "monitor")
+    driver     = UVMNode("driver",     child = None,               type = "driver")
+    scoreboard = UVMNode("scoreboard", child = None,               type = "scoreboard")
+    agent      = UVMNode("agent",      child = [driver,monitor],   type = "agent")
+    env        = UVMNode("env",        child = [agent,scoreboard], type = "env")
+    #env        = UVMNode("env",        child = None,               type = "env")
+    test       = UVMNode("test",       child = [env],              type = "test")
+    Visualization_UVM().VisualizeUVMNode(UVM_node=test)
+    '''
 # %%
