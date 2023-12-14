@@ -35,3 +35,4 @@ future --> Teach how to install the requirement of visualization
 ### How to get the pic?
 1. Open the VisualizationFlag in UVMGenerator class.
 2. The name of output picture is "UVM_pic.png"
+3. ![image](https://github.com/ChungKee/UVM-Testbench-Generator/blob/main/UVM_pic.png)
