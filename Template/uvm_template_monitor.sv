@@ -1,8 +1,8 @@
-class {name}_monitor extends uvm_monitor;
-    `uvm_component_utils({name}_monitor)
+class {name} extends uvm_monitor;
+    `uvm_component_utils({name})
       
       
-    function new(input string inst = "{name}_monitor", uvm_component parent = null);
+    function new(input string inst = "{name}", uvm_component parent = null);
        super.new(inst,parent);
     endfunction
       
@@ -12,4 +12,4 @@ class {name}_monitor extends uvm_monitor;
     endfunction
       
  
-endclass : {name}_monitor
+endclass : {name}

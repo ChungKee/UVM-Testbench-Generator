@@ -1,9 +1,9 @@
 
-class {name}_scoreboard extends uvm_scoreboard;
-    `uvm_component_utils({name}_scoreboard)
+class {name} extends uvm_scoreboard;
+    `uvm_component_utils({name})
 
 
-    function new(input string inst = "{name}_scoreboard", uvm_component parent);
+    function new(input string inst = "{name}", uvm_component parent);
         super.new(inst, parent);
     endfunction
   
@@ -12,4 +12,4 @@ class {name}_scoreboard extends uvm_scoreboard;
 
     endfunction
  
-endclass : {name}_env
+endclass : {name}

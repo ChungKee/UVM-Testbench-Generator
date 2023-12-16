@@ -1,11 +1,11 @@
-class rails_driver extends uvm_driver #(rails_transaction);
-    `uvm_component_utils(rails_driver)
+class AsynFIFO_WriteDriver extends uvm_driver #(AsynFIFO_WriteDriver_transaction);
+    `uvm_component_utils(AsynFIFO_WriteDriver)
     
     virtual rails_if vif2;
     rails_transaction tr;
  
     
-    function new(input string path = "rails_driver", uvm_component parent = null);
+    function new(input string path = "AsynFIFO_WriteDriver", uvm_component parent = null);
         super.new(path,parent);
     endfunction
     
@@ -19,4 +19,4 @@ class rails_driver extends uvm_driver #(rails_transaction);
     
     endtask
   
-endclass : rails_driver
+endclass : AsynFIFO_WriteDriver

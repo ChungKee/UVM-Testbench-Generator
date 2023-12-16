@@ -1,9 +1,9 @@
-class {name}_test extends uvm_test;
+class {name} extends uvm_test;
 
-    `uvm_component_utils({name}_test)
+    `uvm_component_utils({name})
   
   
-    function new(input string inst = "{name}_test", uvm_component parent);
+    function new(input string inst = "{name}", uvm_component parent);
         super.new(inst, parent);
     endfunction
     
@@ -18,4 +18,4 @@ class {name}_test extends uvm_test;
         phase.drop_objection(this);
     endtask
 
-endclass : {name}_test
+endclass : {name}

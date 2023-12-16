@@ -1,9 +1,9 @@
 
-class {name}_env extends uvm_env;
-    `uvm_component_utils({name}_env)
+class {name} extends uvm_env;
+    `uvm_component_utils({name})
   
   
-    function new(input string inst = "{name}_env", uvm_component parent);
+    function new(input string inst = "{name}", uvm_component parent);
         super.new(inst, parent);
     endfunction
   
@@ -17,4 +17,4 @@ class {name}_env extends uvm_env;
 
     endfunction
  
-endclass : {name}_env
+endclass : {name}

@@ -1,16 +1,16 @@
-class rails_test extends uvm_test;
+class AsynFIFO_test extends uvm_test;
 
-    `uvm_component_utils(rails_test)
+    `uvm_component_utils(AsynFIFO_test)
 
-    rails_env e;  
+    AsynFIFO_env env;  
   
-    function new(input string inst = "rails_test", uvm_component parent);
+    function new(input string inst = "AsynFIFO_test", uvm_component parent);
         super.new(inst, parent);
     endfunction
     
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        e = rails_env::type_id::create("e",this);
+        env = AsynFIFO_env::type_id::create("env",this);
 
     endfunction
   
@@ -20,4 +20,4 @@ class rails_test extends uvm_test;
         phase.drop_objection(this);
     endtask
 
-endclass : rails_test
+endclass : AsynFIFO_test

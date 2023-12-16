@@ -1,11 +1,11 @@
-class {name} extends uvm_driver #({name}_transaction);
-    `uvm_component_utils({name})
+class AsynFIFO_ReadDriver extends uvm_driver #(AsynFIFO_ReadDriver_transaction);
+    `uvm_component_utils(AsynFIFO_ReadDriver)
     
     virtual rails_if vif2;
     rails_transaction tr;
  
     
-    function new(input string path = "{name}", uvm_component parent = null);
+    function new(input string path = "AsynFIFO_ReadDriver", uvm_component parent = null);
         super.new(path,parent);
     endfunction
     
@@ -19,4 +19,4 @@ class {name} extends uvm_driver #({name}_transaction);
     
     endtask
   
-endclass : {name}
+endclass : AsynFIFO_ReadDriver
