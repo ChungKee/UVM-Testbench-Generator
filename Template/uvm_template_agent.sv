@@ -18,7 +18,9 @@ class {name} extends uvm_agent;
   
     virtual function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
-
+        if (cfg.is_active == UVM_ACTIVE) begin
+        end
+        
     endfunction
  
 endclass : {name}
