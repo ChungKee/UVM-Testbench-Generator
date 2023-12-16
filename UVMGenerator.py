@@ -119,7 +119,7 @@ class UVM_Generator:
         files = os.listdir("Result")
         for file in files:
             os.remove("Result/"+file)
-        self.CreateTestbench(test_name = test_name, node = test)
+        #self.CreateTestbench(test_name = test_name, node = test)
 
 if __name__ == "__main__":
 
