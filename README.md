@@ -36,5 +36,11 @@ future --> Teach how to install the requirement of visualization
 ### How to get the pic?
 1. Open the VisualizationFlag in UVMGenerator class.
 2. The name of output picture is "UVM_TestbenchHierarchy.png"
+
+#### One Agent   
+
 ![image](https://github.com/ChungKee/UVM-Testbench-Generator/blob/main/Template/UVM_OneAgent.png)
-![image](https://github.com/ChungKee/UVM-Testbench-Generator/blob/main/Template/UVM_TestbenchHierarcy.png)
+
+#### Two Agent
+
+![image](https://github.com/ChungKee/UVM-Testbench-Generator/blob/main/Template/UVM_TestbenchHierarchy.png)
