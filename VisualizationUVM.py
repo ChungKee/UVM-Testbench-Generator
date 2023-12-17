@@ -31,4 +31,4 @@ class Visualization_UVM:
     
     def VisualizeUVMNode(self, UVM_node):
         root = self.DfsNode(UVM_node = UVM_node)
-        UniqueDotExporter(root).to_picture("UVM_pic.png")
+        UniqueDotExporter(root).to_picture("UVM_TestbenchHierarchy.png")
