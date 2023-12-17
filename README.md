@@ -3,7 +3,7 @@
 
 ## Details
 - Easy implementation
-- Suport agent, driver, environment, monitor, scoreboard, test
+- Suport agent, driver, environment, monitor, scoreboard, test, sequence, sequence_item
 
 ## File
 |Filename | Description|
@@ -29,9 +29,8 @@
 
 ## Visualization
 ### Install
-The visualization of UVM need to import anytree and graphviz
-
-future --> Teach how to install the requirement of visualization
+1. The visualization of UVM need to import anytree and graphviz
+2. future --> Teach how to install the requirement of visualization
 
 ### How to get the pic?
 1. Open the VisualizationFlag in UVMGenerator class.

@@ -118,9 +118,12 @@ class UVM_Generator:
         
         if self.VisualizationFlag == True :
             Visualization_UVM().VisualizeUVMNode(UVM_node=test)
+        if not os.path.exists("Result"):
+            os.makedirs("Result")
         files = os.listdir("Result")
         for file in files:
             os.remove("Result/"+file)
+
         self.CreateTestbench(test_name = test_name, node = test)
         
 
