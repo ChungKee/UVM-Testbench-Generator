@@ -81,20 +81,27 @@ class UVM_Generator:
         for child in node.child or []:
             self.print_tree(child, indent + 1)
 
-    def DefaultInput(self):
-        test_name = "AsynFIFO"
-        monitor    = UVMNode("monitor",    child = None,               type = "monitor")
-        driver     = UVMNode("driver",     child = None,               type = "driver")
-        scoreboard = UVMNode("scoreboard", child = None,               type = "scoreboard")
-        agent      = UVMNode("agent",      child = [driver,monitor],   type = "agent")
-        env        = UVMNode("env",        child = [agent,scoreboard], type = "env")
-        test       = UVMNode("test",       child = [env],              type = "test")
+    def OneAgentInput(self):
+        test_name     = "AsynFIFO"
+        monitor       = UVMNode("monitor",       child = None,               type = "monitor")
+        driver        = UVMNode("driver",        child = None,               type = "driver")
+        scoreboard    = UVMNode("scoreboard",    child = None,               type = "scoreboard")
+        agent         = UVMNode("agent",         child = [driver,monitor],   type = "agent")
+        env           = UVMNode("env",           child = [agent,scoreboard], type = "env")
+        sequence_item = UVMNode("sequence_item", child = None,               type = "sequence_item")
+        sequence      = UVMNode("sequence",      child = [sequence_item],    type = "sequence")
+        test          = UVMNode("test",          child = [env,sequence],     type = "test")
         
         print("The UVM testbench : ")
         self.print_tree(test)
         
         if self.VisualizationFlag == True :
             Visualization_UVM().VisualizeUVMNode(UVM_node=test)
+        if not os.path.exists("Result"):
+            os.makedirs("Result")
+        files = os.listdir("Result")
+        for file in files:
+            os.remove("Result/"+file)
         
         self.CreateTestbench(test_name = test_name, node = test)
 

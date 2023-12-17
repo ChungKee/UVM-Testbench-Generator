@@ -4,27 +4,49 @@
 ## Details
 - Easy implementation
 - Suport agent, driver, environment, monitor, scoreboard, test, sequence, sequence_item
+- Suport build_phase 
+
 
 ## File
 |Filename | Description|
 |-        | -|
-|Result   | Get the result from this file|
+|Result   | Get the .sv from this file|
 |Template | The uvm template|
-|main.py  | Run this python code and get the uvm testbench in Result |
-
+|UVMGenerator.py     | Run this python code and get the uvm testbench in Result |
+|VisualizationUVM.py | Visualization of UVM hierarchy                           |
 ## Easy Example
 
 1. run UVMGenerator.py
-2. Get the hierarchy 
+2. Get the simple version of the hierarchy of testbench
 ```
+The UVM testbench : 
 [0] test
-  [1] env
-    [2] agent
-      [3] driver
-      [3] monitor
-    [2] scoreboard
+    [1] env
+        [2] ReadAgent
+            [3] ReadDriver
+            [3] ReadMonitor
+        [2] WriteAgent
+            [3] WriteDriver
+            [3] WriteMonitor
+        [2] scoreboard
+    [1] sequence
+        [2] sequence_item
 ```
-3. Copy the result from Result file
+3. Copy the .sv from Result file
+
+## Input
+1. Can choose TwoAgentInput() or OneAgentInput() to create UVM testbench.
+    
+    a. OneAgentInput :
+
+    ![image](https://github.com/ChungKee/UVM-Testbench-Generator/blob/main/Template/UVM_OneAgent.png)
+
+    b. TwoAgentInput : 
+
+    ![image](https://github.com/ChungKee/UVM-Testbench-Generator/blob/main/Template/UVM_TestbenchHierarchy.png)
+
+2. Customizing UVM testbench by modify TwoAgentInput() or OneAgentInput().
+
 
 
 ## Visualization
