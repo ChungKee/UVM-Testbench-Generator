@@ -1,6 +1,7 @@
 # %%
 from queue import Queue
 from VisualizationUVM import Visualization_UVM
+from MakeUVMPowerPoint import MakeUVMPowerPoint
 import os
 
 class UVMNode:
@@ -80,32 +81,23 @@ class UVM_Generator:
         print("    " * indent + f"[{indent}] {node.name}")
         for child in node.child or []:
             self.print_tree(child, indent + 1)
+    
+    def CalculateAgent(self, uvm_root):
+        NumberAgent = 0
+        #BFS
+        queue = [uvm_root]
 
-    def OneAgentInput(self):
-        test_name     = "AsynFIFO"
-        monitor       = UVMNode("monitor",       child = None,               type = "monitor")
-        driver        = UVMNode("driver",        child = None,               type = "driver")
-        scoreboard    = UVMNode("scoreboard",    child = None,               type = "scoreboard")
-        agent         = UVMNode("agent",         child = [driver,monitor],   type = "agent")
-        env           = UVMNode("env",           child = [agent,scoreboard], type = "env")
-        sequence_item = UVMNode("sequence_item", child = None,               type = "sequence_item")
-        sequence      = UVMNode("sequence",      child = [sequence_item],    type = "sequence")
-        test          = UVMNode("test",          child = [env,sequence],     type = "test")
-        
-        print("The UVM testbench : ")
-        self.print_tree(test)
-        
-        if self.VisualizationFlag == True :
-            Visualization_UVM().VisualizeUVMNode(UVM_node=test)
-        if not os.path.exists("Result"):
-            os.makedirs("Result")
-        files = os.listdir("Result")
-        for file in files:
-            os.remove("Result/"+file)
-        
-        self.CreateTestbench(test_name = test_name, node = test)
+        while queue:
+            temp = queue.pop(0)
+            if temp.type == "agent":
+                NumberAgent = NumberAgent + 1
+            if temp.child == None:
+                continue
+            for c in temp.child:
+                queue.append(c)
+        return NumberAgent
 
-    def TwoAgentInput(self):
+        """ Two Agent reference
         test_name = "AsynFIFO"
         WriteMonitor  = UVMNode("WriteMonitor",  child = None,                                type = "monitor")
         WriteDriver   = UVMNode("WriteDriver",   child = None,                                type = "driver")
@@ -118,11 +110,36 @@ class UVM_Generator:
         sequence_item = UVMNode("sequence_item", child = None,                                type = "sequence_item")
         sequence      = UVMNode("sequence",      child = [sequence_item],                     type = "sequence")
         test          = UVMNode("test",          child = [env,sequence],                      type = "test")
-        
-        
-        print("The UVM testbench : ")
+        """
+    
+    def SetInput(self):
+        test_name     = "AsynFIFO"
+        """
+        monitor       = UVMNode("monitor",       child = None,               type = "monitor")
+        driver        = UVMNode("driver",        child = None,               type = "driver")
+        scoreboard    = UVMNode("scoreboard",    child = None,               type = "scoreboard")
+        agent         = UVMNode("agent",         child = [driver,monitor],   type = "agent")
+        env           = UVMNode("env",           child = [agent,scoreboard], type = "env")
+        sequence_item = UVMNode("sequence_item", child = None,               type = "sequence_item")
+        sequence      = UVMNode("sequence",      child = [sequence_item],    type = "sequence")
+        test          = UVMNode("test",          child = [env,sequence],     type = "test")
+        """
+        WriteMonitor  = UVMNode("WriteMonitor",  child = None,                                type = "monitor")
+        WriteDriver   = UVMNode("WriteDriver",   child = None,                                type = "driver")
+        ReadMonitor   = UVMNode("ReadMonitor",   child = None,                                type = "monitor")
+        ReadDriver    = UVMNode("ReadDriver",    child = None,                                type = "driver")
+        scoreboard    = UVMNode("scoreboard",    child = None,                                type = "scoreboard")
+        ReadAgent     = UVMNode("ReadAgent",     child = [ReadDriver,ReadMonitor],            type = "agent" )
+        WriteAgent    = UVMNode("WriteAgent",    child = [WriteDriver,WriteMonitor],          type = "agent")
+        env           = UVMNode("env",           child = [ReadAgent, WriteAgent, scoreboard], type = "env")
+        sequence_item = UVMNode("sequence_item", child = None,                                type = "sequence_item")
+        sequence      = UVMNode("sequence",      child = [sequence_item],                     type = "sequence")
+        test          = UVMNode("test1",          child = [env,sequence],                      type = "test")
+        #"""
         self.print_tree(test)
-        
+        return test,test_name
+
+    def CheckBeforeCreateTestbench(self, test):
         if self.VisualizationFlag == True :
             Visualization_UVM().VisualizeUVMNode(UVM_node=test)
         if not os.path.exists("Result"):
@@ -131,13 +148,12 @@ class UVM_Generator:
         for file in files:
             os.remove("Result/"+file)
 
-        self.CreateTestbench(test_name = test_name, node = test)
-        
-
 if __name__ == "__main__":
 
     UG = UVM_Generator()
-    UG.TwoAgentInput()
-
+    test_root, test_name = UG.SetInput()
+    UG.CheckBeforeCreateTestbench(test_root)
+    MakeUVMPowerPoint().RunByBFS(test_root)
+    UG.CreateTestbench(test_name, test_root)
 
 # %%

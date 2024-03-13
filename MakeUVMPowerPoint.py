@@ -10,8 +10,6 @@ class UVMNode:
         self.child = child
         self.type = type
 
-
-
 class MakeUVMPowerPoint:
     def __init__(self) -> None:
         self.prs = Presentation()
@@ -49,27 +47,69 @@ class MakeUVMPowerPoint:
         # Save the presentation
         self.prs.save("my_presentation.pptx")
 
-    def CreateTest(self, x = 0.1, y = 0.1, NumberAgent = 1):
-        self.CreateComponent(x = x, y = y, width = 0.075 + 0.225 * NumberAgent, height = 0.5, name = "Test",
+    def CreateTest(self, x = 0.1, y = 0.1, NumberAgent = 1, name = "Test"):
+        self.CreateComponent(x = x, y = y, width = 0.075 + 0.225 * NumberAgent, height = 0.5, name = name,
                              shape = MSO_SHAPE.RECTANGLE,
                              P_alignment = PP_ALIGN.LEFT,
                              color = RGBColor(112, 48, 160))
         return None
-    def CreateEnv(self, x = 0.1, y = 0.1, NumberAgent = 1):
-        self.CreateComponent(x = x + 0.025, y = y + 0.05, width = 0.025 + 0.225 * NumberAgent, height = 0.4, name = "Env",
+    def CreateEnv(self, x = 0.1, y = 0.1, NumberAgent = 1, name = "Env"):
+        self.CreateComponent(x = x + 0.025, y = y + 0.05, width = 0.025 + 0.225 * NumberAgent, height = 0.4, name = name,
                              shape = MSO_SHAPE.RECTANGLE,
                              P_alignment = PP_ALIGN.LEFT,
                              color = RGBColor(0,112,192))
         return None
     
-    def CreateAgent(self, x = 0.1, y = 0.1, NumberAgent = 1):
+    def CreateAgent(self, x = 0.1, y = 0.1, NumberAgent = 1, name = "Agent"):
         for i in range(NumberAgent):
-            self.CreateComponent(x = x + 0.05 + i * 0.225, y = y + 0.2, width = 0.2, height = 0.2, name = "Agent1",
+            self.CreateComponent(x = x + 0.05 + i * 0.225, y = y + 0.2, width = 0.2, height = 0.2, name = name,
                                 shape = MSO_SHAPE.RECTANGLE,
                                 P_alignment = PP_ALIGN.LEFT,
                                 color = RGBColor(0, 176, 240))
             self.CreateComponent(x = x + 0.075 + i * 0.225, y = y + 0.3, width = 0.07, height = 0.05, name = "Driver")
             self.CreateComponent(x = x + 0.165 + i * 0.225, y = y + 0.3, width = 0.07, height = 0.05, name = "Monitor")
+    
+    def CalculateAgent(self, test_root):
+        NumberAgent = 0
+        #BFS
+        queue = [test_root]
+
+        while queue:
+            temp = queue.pop(0)
+            if temp.type == "agent":
+                NumberAgent = NumberAgent + 1
+            if temp.child == None:
+                continue
+            for c in temp.child:
+                queue.append(c)
+        return NumberAgent
+    
+    def RunByBFS(self, test_root):
+        NumberAgent = self.CalculateAgent(test_root)
+        print(NumberAgent)
+        x = 0.5 - (0.075 + 0.225 * NumberAgent)/2
+        y = 0.2
+        self.CreateSlide()
+        queue = [test_root]
+
+        while queue:
+            temp = queue.pop(0)
+            if temp.type == "test":
+                self.CreateTest(x, y, NumberAgent = NumberAgent, name = temp.name)
+            if temp.type == "env":
+                self.CreateEnv(x,y, NumberAgent = NumberAgent, name = temp.name)
+            if temp.type == "scoreboard":
+                self.CreateComponent(x =  0.45, y = y + 0.1, width = 0.1, height = 0.05, name = temp.name,
+                             color = RGBColor(0, 176, 240))
+            if temp.type == "agent":
+                self.CreateAgent(x,y,NumberAgent = NumberAgent, name = temp.name)
+            if temp.child == None:
+                continue
+            for c in temp.child:
+                queue.append(c)
+        self.SavePowerPoint()
+        return None
+    
     def Run(self):
         self.CreateSlide()
         NumberAgent = 2
@@ -82,21 +122,12 @@ class MakeUVMPowerPoint:
         self.CreateAgent(x,y,NumberAgent = NumberAgent)
 
         self.SavePowerPoint()
-
+"""
 if __name__ == "__main__":
     
     MUP = MakeUVMPowerPoint()
     MUP.Run()
-    test_name     = "AsynFIFO"
-    monitor       = UVMNode("monitor",       child = None,               type = "monitor")
-    driver        = UVMNode("driver",        child = None,               type = "driver")
-    scoreboard    = UVMNode("scoreboard",    child = None,               type = "scoreboard")
-    agent         = UVMNode("agent",         child = [driver,monitor],   type = "agent")
-    env           = UVMNode("env",           child = [agent,scoreboard], type = "env")
-    sequence_item = UVMNode("sequence_item", child = None,               type = "sequence_item")
-    sequence      = UVMNode("sequence",      child = [sequence_item],    type = "sequence")
-    test          = UVMNode("test",          child = [env,sequence],     type = "test")
-    
+"""    
 #%%
 
 

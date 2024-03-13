@@ -1,17 +1,6 @@
 from anytree import Node
 from anytree.exporter import UniqueDotExporter
 
-'''
-monitor    = Node("monitor",    children = None)
-driver     = Node("driver",     children = None)
-scoreboard = Node("scoreboard", children = None)
-agent      = Node("agent",      children = [driver,monitor])
-env        = Node("env",        children = [agent,scoreboard])
-test       = Node("test",       children = [env])
-
-UniqueDotExporter(test).to_picture("uvm.png")
-'''
-
 class Visualization_UVM:
     def __init__(self) -> None:
         pass
