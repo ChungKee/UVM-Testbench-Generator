@@ -5,13 +5,24 @@ import re
 class module:
     def __init__(self, name) -> None:
         self.name = name
-        self.child = None
+        self.child = []
         self.input_variable = []
         self.output_variable = []
+
 class ReadingDesign:
     
     def __init__(self) -> None:
         self.root = []
+        self.head = []
+
+    def FindRoot(self, name):
+        count = 0
+        for rt in self.root:
+            if name == rt.name:
+                return count
+            count = count + 1
+
+        return count
 
     def GetVariable(self,line):
         ans = line.replace("output","")
@@ -31,32 +42,61 @@ class ReadingDesign:
         for file in files:
             f1 = open(path + "\\" + file,"r")
             for line in f1:
-                if "module" in line and "endmodule" not in line:
+                if "module " in line and "endmodule" not in line:
                     name = line.replace("module","")
                     name = name.replace(" ","")
                     name = name.replace("(","")
                     self.root.append(module(name))
-                if "input" in line and "module" not in line:
+                    self.head.append(len(self.root) - 1)
+                if "input " in line:
                     self.root[-1].input_variable.append(self.GetVariable(line))
-                if "output" in line and "module" not in line:
+                if "output " in line and "module" not in line:
                     self.root[-1].output_variable.append(self.GetVariable(line))
             f1.close()
         
-        for m in self.root:
-            for iv in m.input_variable:
-                print(iv)
-            for ov in m.output_variable:
-                print(ov)
         return None
 
     def LinkDesign(self):
-        pass
+        path = "Design"
+        files = os.listdir(path)
+
+        for file in files:
+            f1 = open(path + "\\" + file,"r")
+            child_index = 0
+            parent_index = 0
+            for line in f1:
+                if "module " in line and "endmodule" not in line:
+                    module = line.replace("module","")
+                    module = module.replace(" ","")
+                    module = module.replace("(","")
+                    
+                if "(" in line and "module" not in line:
+                    for rt in self.root:
+                        name = rt.name[:-1]
+                        if name in line:
+                            child_index = self.FindRoot(rt.name)
+                            parent_index = self.FindRoot(module)
+                            self.root[parent_index].child.append(self.root[child_index])
+                            if child_index in self.head:
+                                self.head.remove(child_index)
+                            #print(parent_index, child_index)
+                            break
+            f1.close()
 
     def PrintHierarchyDesign(self):
+        for hd in self.head:
+            self.print_tree(self.root[hd], 0)
+        
         return None
+    
+    def print_tree(self, node, indent=0):
+        print("    " * indent + f"[{indent}] {node.name}")
+        for child in node.child or []:
+            self.print_tree(child, indent + 1)
 
 if __name__ == "__main__":
     RD = ReadingDesign()
     RD.ImportDesign()
-
+    RD.LinkDesign()
+    RD.PrintHierarchyDesign()
 #%%
