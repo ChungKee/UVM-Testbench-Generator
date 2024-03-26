@@ -12,15 +12,17 @@
 |-        | -|
 |Result   | Get the .sv from this file|
 |Template | The uvm template|
-|UVMGenerator.py     | Run this python code and get the uvm testbench in Result |
-|VisualizationUVM.py | Visualization of UVM hierarchy                           |
+|UVMGenerator.py     | Run this python code and get the uvm testbench in Result        |
+|VisualizationUVM.py | Visualization of UVM hierarchy                                  |
+|MakeUVMPowerPoint.py| Make the UVM graph in powerpoint version                        |
+|ReadDesign          | Read the verilog design(.v) module and write the interface(.sv) |
 ## Easy Example
 
 1. run UVMGenerator.py
-2. Get the simple version of the hierarchy of testbench
+2. Get the simple version of the hierarchy of testbench and design
 ```
-The UVM testbench : 
-[0] test
+The Hierarchy of UVM:
+[0] test1
     [1] env
         [2] ReadAgent
             [3] ReadDriver
@@ -31,6 +33,13 @@ The UVM testbench :
         [2] scoreboard
     [1] sequence
         [2] sequence_item
+
+The Hierarchy of Design:
+[0] MAS_2input
+    [1] ALU
+    [1] QComparator
+    [1] ALU
+
 ```
 3. Copy the .sv from Result file
 
