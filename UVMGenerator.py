@@ -2,6 +2,7 @@
 from queue import Queue
 from VisualizationUVM import Visualization_UVM
 from MakeUVMPowerPoint import MakeUVMPowerPoint
+from ReadDesign import ReadingDesign
 import os
 
 class UVMNode:
@@ -129,13 +130,14 @@ class UVM_Generator:
         ReadMonitor   = UVMNode("ReadMonitor",   child = None,                                type = "monitor")
         ReadDriver    = UVMNode("ReadDriver",    child = None,                                type = "driver")
         scoreboard    = UVMNode("scoreboard",    child = None,                                type = "scoreboard")
-        ReadAgent     = UVMNode("ReadAgent",     child = [ReadDriver,ReadMonitor],            type = "agent" )
+        ReadAgent     = UVMNode("ReadAgent",     child = [ReadDriver, ReadMonitor],            type = "agent" )
         WriteAgent    = UVMNode("WriteAgent",    child = [WriteDriver,WriteMonitor],          type = "agent")
         env           = UVMNode("env",           child = [ReadAgent, WriteAgent, scoreboard], type = "env")
         sequence_item = UVMNode("sequence_item", child = None,                                type = "sequence_item")
         sequence      = UVMNode("sequence",      child = [sequence_item],                     type = "sequence")
         test          = UVMNode("test1",          child = [env,sequence],                      type = "test")
         #"""
+        print("The Hierarchy of UVM:")
         self.print_tree(test)
         return test,test_name
 
@@ -153,7 +155,8 @@ if __name__ == "__main__":
     UG = UVM_Generator()
     test_root, test_name = UG.SetInput()
     UG.CheckBeforeCreateTestbench(test_root)
-    MakeUVMPowerPoint().RunByBFS(test_root)
+    MakeUVMPowerPoint().RunByBFS(test_root) 
     UG.CreateTestbench(test_name, test_root)
+    ReadingDesign().WriteInterface()
 
 # %%

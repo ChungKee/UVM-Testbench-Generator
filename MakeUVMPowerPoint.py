@@ -45,7 +45,7 @@ class MakeUVMPowerPoint:
 
     def SavePowerPoint(self):
         # Save the presentation
-        self.prs.save("my_presentation.pptx")
+        self.prs.save("UVM_graph.pptx")
 
     def CreateTest(self, x = 0.1, y = 0.1, NumberAgent = 1, name = "Test"):
         self.CreateComponent(x = x, y = y, width = 0.075 + 0.225 * NumberAgent, height = 0.5, name = name,
@@ -60,14 +60,17 @@ class MakeUVMPowerPoint:
                              color = RGBColor(0,112,192))
         return None
     
-    def CreateAgent(self, x = 0.1, y = 0.1, NumberAgent = 1, name = "Agent"):
-        for i in range(NumberAgent):
-            self.CreateComponent(x = x + 0.05 + i * 0.225, y = y + 0.2, width = 0.2, height = 0.2, name = name,
-                                shape = MSO_SHAPE.RECTANGLE,
-                                P_alignment = PP_ALIGN.LEFT,
-                                color = RGBColor(0, 176, 240))
-            self.CreateComponent(x = x + 0.075 + i * 0.225, y = y + 0.3, width = 0.07, height = 0.05, name = "Driver")
-            self.CreateComponent(x = x + 0.165 + i * 0.225, y = y + 0.3, width = 0.07, height = 0.05, name = "Monitor")
+    def CreateAgent(self, x = 0.1, y = 0.1, NumberAgent = 1, name = "Agent", IndexAgent = 0, child = []):
+            
+        self.CreateComponent(x = x + 0.05 + IndexAgent * 0.225, y = y + 0.2, width = 0.2, height = 0.2, name = name,
+                            shape = MSO_SHAPE.RECTANGLE,
+                            P_alignment = PP_ALIGN.LEFT,
+                            color = RGBColor(0, 176, 240))
+        for c in child:
+            if c.type == "driver":
+                self.CreateComponent(x = x + 0.075 + IndexAgent * 0.225, y = y + 0.3, width = 0.07, height = 0.05, name = "Driver")
+            if c.type == "monitor":
+                self.CreateComponent(x = x + 0.165 + IndexAgent * 0.225, y = y + 0.3, width = 0.07, height = 0.05, name = "Monitor")
     
     def CalculateAgent(self, test_root):
         NumberAgent = 0
@@ -86,12 +89,11 @@ class MakeUVMPowerPoint:
     
     def RunByBFS(self, test_root):
         NumberAgent = self.CalculateAgent(test_root)
-        print(NumberAgent)
         x = 0.5 - (0.075 + 0.225 * NumberAgent)/2
         y = 0.2
         self.CreateSlide()
         queue = [test_root]
-
+        agentcount = 0
         while queue:
             temp = queue.pop(0)
             if temp.type == "test":
@@ -102,26 +104,16 @@ class MakeUVMPowerPoint:
                 self.CreateComponent(x =  0.45, y = y + 0.1, width = 0.1, height = 0.05, name = temp.name,
                              color = RGBColor(0, 176, 240))
             if temp.type == "agent":
-                self.CreateAgent(x,y,NumberAgent = NumberAgent, name = temp.name)
+                self.CreateAgent(x,y,NumberAgent = NumberAgent, name = temp.name, IndexAgent = agentcount, child = temp.child)
+                agentcount = agentcount + 1
             if temp.child == None:
                 continue
+            
             for c in temp.child:
                 queue.append(c)
         self.SavePowerPoint()
         return None
     
-    def Run(self):
-        self.CreateSlide()
-        NumberAgent = 2
-        x = 0.5 - (0.075 + 0.225 * NumberAgent)/2
-        y = 0.2
-        self.CreateTest(x, y, NumberAgent = NumberAgent)
-        self.CreateEnv(x,y, NumberAgent = NumberAgent)
-        self.CreateComponent(x =  0.45, y = y + 0.1, width = 0.1, height = 0.05, name = "Scoreboard",
-                             color = RGBColor(0, 176, 240))
-        self.CreateAgent(x,y,NumberAgent = NumberAgent)
-
-        self.SavePowerPoint()
 """
 if __name__ == "__main__":
     
