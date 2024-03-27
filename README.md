@@ -1,11 +1,10 @@
 # UVM-Testbench-Generator
  Can generate the uvm testbench automatically
 
-## Details
-- Easy implementation
-- Suport agent, driver, environment, monitor, scoreboard, test, sequence, sequence_item
-- Suport build_phase 
-
+## Feature
+1. Main feature is to generate the UVM testbench (.sv) automatically 
+2. Reading the design (.v) --> write the interface (.sv) and print the hierarchy of design 
+3. Generate UVM graph (.pptx) and let the user to modify the UVM graph in powerpoint
 
 ## File
 |Filename | Description|
@@ -56,21 +55,8 @@ The Hierarchy of Design:
 
 2. Customizing UVM testbench by modify TwoAgentInput() or OneAgentInput().
 
-
-
-## Visualization
-### Install
-1. The visualization of UVM need to import anytree and graphviz
-2. future --> Teach how to install the requirement of visualization
-
-### How to get the pic?
-1. Open the VisualizationFlag in UVMGenerator class.
-2. The name of output picture is "UVM_TestbenchHierarchy.png"
-
-#### One Agent   
-
-![image](https://github.com/ChungKee/UVM-Testbench-Generator/blob/main/Template/UVM_OneAgent.png)
-
-#### Two Agent
-
-![image](https://github.com/ChungKee/UVM-Testbench-Generator/blob/main/Template/UVM_TestbenchHierarchy.png)
+## GGenerate UVM graph (.pptx)
+Two agent in powerpoint sample:
+![image](https://github.com/ChungKee/UVM-Testbench-Generator/blob/main/Template/2Agent_Powerpoint.png)
+Maximum with 4 agent:
+![image](https://github.com/ChungKee/UVM-Testbench-Generator/blob/main/Template/4Agent_Powerpoint.png)
