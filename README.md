@@ -9,12 +9,12 @@
 ## File
 |Filename | Description|
 |-        | -|
-|Result   | Get the .sv from this file|
+|Result   | Get the (.sv) from this file|
 |Template | The uvm template|
-|UVMGenerator.py     | Run this python code and get the uvm testbench in Result        |
-|VisualizationUVM.py | Visualization of UVM hierarchy                                  |
-|MakeUVMPowerPoint.py| Make the UVM graph in powerpoint version                        |
-|ReadDesign          | Read the verilog design(.v) module and write the interface(.sv) |
+|UVMGenerator.py     | Run this python code and get the uvm testbench in Result          |
+|VisualizationUVM.py | Visualization of UVM hierarchy                                    |
+|MakeUVMPowerPoint.py| Make the UVM graph in powerpoint version                          |
+|ReadDesign          | Read the verilog design (.v) module and write the interface (.sv) |
 ## Easy Example
 
 1. run UVMGenerator.py
@@ -55,7 +55,7 @@ The Hierarchy of Design:
 
 2. Customizing UVM testbench by modify TwoAgentInput() or OneAgentInput().
 
-## GGenerate UVM graph (.pptx)
+## Generate UVM graph (.pptx)
 Two agent in powerpoint sample:
 ![image](https://github.com/ChungKee/UVM-Testbench-Generator/blob/main/Template/2Agent_Powerpoint.png)
 Maximum with 4 agent:
