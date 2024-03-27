@@ -23,16 +23,19 @@ class ReadingDesign:
             count = count + 1
 
         return count
-
+ 
     def GetVariable(self,line):
         ans = line.replace("output","")
         ans = ans.replace("input","")
         ans = ans.replace("wire","")
         ans = ans.replace("reg","")
         ans = ans.replace("signed","")
-        ans = ans.replace(",","")
         ans = ans.replace("\n","")
         ans = ans.replace(" ","")
+        ans = ans.replace(";","")
+        if ans[-1] == ",":
+            ans = ans[:-1]
+        print(ans)
         return ans
 
     def ImportDesign(self):
@@ -47,11 +50,13 @@ class ReadingDesign:
                     name = name.replace(" ","")
                     name = name.replace("(","")
                     name = name.replace("\n","")
+                    name = name.replace("#","")
+                    print(name)
                     self.root.append(module(name))
                     self.head.append(len(self.root) - 1)
-                if "input " in line:
+                if "input " in line: 
                     self.root[-1].input_variable.append(self.GetVariable(line))
-                if "output " in line and "module" not in line:
+                if "output " in line:
                     self.root[-1].output_variable.append(self.GetVariable(line))
             f1.close()
         
@@ -71,7 +76,7 @@ class ReadingDesign:
                     module = module.replace(" ","")
                     module = module.replace("(","")
                     module = module.replace("\n","")
-                    
+                    module = module.replace("#","")
                 if "(" in line and "module" not in line:
                     for rt in self.root:
                         name = rt.name[:-1]
